@@ -1,0 +1,87 @@
+<div class="dashboard gochi">
+
+  <div class="row">
+
+
+    <div class="col-md-3">
+
+      <app-proyectos (eventoNamePoyecto)="reciveNameProyect($event)" (eventoPoyecto)="reciveIdProyect($event)" (fechasPoyecto)="reciveFechas($event)"></app-proyectos>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+      <app-tareas [idProyectRecivido]="idProyect" [nameProyectRecivido]="nameProyecto"  [fechasRecividas]="fechas"> </app-tareas>
+
+    </div>
+
+
+
+
+
+    <div class="col-md-3">
+      <h1> <strong> Fechas Que no se trabajaran</strong></h1>
+      <hr>
+      <br>
+
+      <div class="text-right">
+        <button [disabled]="!desplegarFormulario" (click)="mostrarVentanaNuevaFecha = !mostrarVentanaNuevaFecha" class="btn btn-outline-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Agregar fechas
+        </button>
+
+      </div>
+      <br>
+
+
+
+
+      <!--Form Agregar Tarea-->
+      <form class="formulario" [formGroup]="formato" (ngSubmit)="guardarFecha('g')" *ngIf="mostrarVentanaNuevaFecha">
+        <label class="col-md-12">Fechas que no se trabajaran</label>
+        <div class="form-group row">
+
+          <div class="col-md-12">
+            <input class="form-control" [(ngModel)]="fecha" type="date" formControlName="fecha">
+          </div>
+
+        </div>
+
+        <div class="form-group row">
+          <label class="col-2 col-form-label">&nbsp;</label>
+          <div class="input-group col-md-8">
+            <button [disabled]="!formato.valid" type="submit" class="btn btn-outline-primary">
+               Guardar
+            </button>
+          </div>
+        </div>
+      </form>
+
+
+
+
+
+
+      <ul class="list-group" *ngFor="let fecha of firebaseService.fechasNoTrabajadasPath | async">
+
+        <div class="row">
+          <div class="col-md-10">
+            <li class="list-group-item">  {{ fecha.$value }} </li>
+          </div>
+
+          <div class="col-md-2">
+            <button (click)="eliminarFecha(fecha.$key)" class="btn btn-outline-danger">
+               <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+          </div>
+
+        </div>
+
+      </ul>
+       </div>
+
+
+    </div>
+
+  </div>

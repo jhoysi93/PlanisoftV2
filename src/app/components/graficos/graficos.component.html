@@ -1,0 +1,27 @@
+<div class="dashboard gochi">
+  <div class="row">
+
+    <div class="col-md-4">
+      <app-proyectos (eventoNamePoyecto)="reciveNameProyect($event)"  (eventoPoyecto)="reciveIdProyect($event)"></app-proyectos>
+    </div>
+
+    <div class="col-md-8">
+
+      <ul class="nav justify-content-end nav-tabs">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" (click)="estadisticos()" [routerLink]= "['estadisticos']"> <h3>Graficos Estadisticos</h3></a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" (click)="tablas()" [routerLink]= "['tablas']"><h3>Tablas</h3></a>
+        </li>
+      
+      </ul>
+
+      <router-outlet></router-outlet>
+
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,172 @@
+<div >
+  <h1>Proyectos</h1>
+  <hr>
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="alert alert-danger" role="alert" *ngIf="!(_firebaseService.proyectoPath | async)">
+        <strong>Sin Proyectos</strong>
+      </div>
+
+
+      <div class="alert alert-warning" role="alert" *ngIf="!(_firebaseService.proyectoPath | async)">
+        <strong>Cargando espere porfavor...</strong>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+  <ul class="list-group" *ngFor="let proye of _firebaseService.proyectoPath | async ">
+    <div class="container btn-separation animated fadeIn fast">
+      <div class="row">
+        <div class="col-md-8">
+
+          <button (click)="mandarIdPoyect(proye.$key, proye.nombre, proye.fechaInicio, proye.fechaFin , proye.descripcion)" type="button"
+            style="color:black" class="list-group-item btn-outline-primary btn-block justify-content-between">
+          {{ proye.nombre }}
+          <span class="badge badge-default badge-pill"> 90 </span>
+        </button>
+        </div>
+        <div class="col-md-2">
+
+          <button data-toggle="modal" data-target="#exampleModal" (click)="setFormulario(proye.$key)" type="button" class="btn btn-outline-primary">
+            <i class="fa fa-x1 fa-pencil" aria-hidden="true"></i>
+            </button>
+        </div>
+        <div class="col-md-2">
+
+          <button (click)="setDatosModal(proye.$key , proye.nombre)" type="button" class="btn btn-outline-danger" data-toggle="modal"
+            data-target="#myModal2">
+            <i class="fa fa-1x fa-trash" aria-hidden="true"></i>
+            </button>
+        </div>
+        <br>
+
+      </div>
+    </div>
+
+  </ul>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Proyecto</h5>
+          <button type="button" class="close" #closeModalEliminar data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          Seguro que quiere eliminar el proyecto? {{ nombreProyect | uppercase }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button (click)="eliminarProyecto()" type="button" class="btn btn-primary">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <br>
+
+
+  <button (click)="limpiarCamposModal()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"
+    data-whatever="@fat">
+    <i class="fa fa-plus" aria-hidden="true"></i>
+    Nuevo Proyecto
+    </button>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nuevo Proyecto</h5>
+          <button type="button" class="close" #closeModal data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="formato" (ngSubmit)="guardarProyecto('g')">
+
+            <div class="form-group">
+              <label for="recipient-name" class="form-control-label">Nombre:</label>
+              <input type="text" [(ngModel)]="proyecto.nombre" class="form-control" formControlName="nombre">
+            </div>
+
+            <div class="form-group">
+              <label for="recipient-name" class="form-control-label">Descirpcion:</label>
+              <input type="text" [(ngModel)]="proyecto.descripcion" class="form-control" formControlName="descripcion">
+            </div>
+
+            <div class="form-group">
+              <label for="recipient-name" class="form-control-label">Fecha inicio:</label>
+              <input type="date" [(ngModel)]="proyecto.fechaInicio" class="form-control" formControlName="fechaInicio">
+            </div>
+
+            <div class="form-group">
+              <label for="recipient-name" class="form-control-label">Fecha Fin:</label>
+              <input type="date" class="form-control" [(ngModel)]="proyecto.fechaFin" formControlName="fechaFin">
+            </div>
+
+            <!--   <div class="form-group row">
+              <label class="col-2 col-form-label">Fechas({{ tam }})</label>
+              <div class="col-md-8" formArrayName="fechasNoTrabajadas"  >
+
+                <input [(ngModel)]="proyecto.fechasNoTrabajadas[i]" *ngFor="let fechasNoTrabajada of formato.controls['fechasNoTrabajadas'].controls ; let i = index"
+                  [formControlName]="i" type="date" class="form-control">
+              </div>
+
+              <button (click)="agregarFechasNoTrabajadas()" type="button" class="btn btn-primary">
+                Nuevo
+              </button>
+
+            </div>
+-->
+
+
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+              <button *ngIf="buttonCrearProyecto" type="submit" [disabled]="!formato.valid" class="btn btn-primary">Crear Proyecto</button>
+            </div>
+            <button *ngIf="buttonGuardarCambios" (click)="guardarProyecto('e')" [disabled]="!formato.valid" type="button" class="btn btn-primary">Guardar Cambios</button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <br><br>
+
+
+
+
+
+</div>
+
+<!-- Descriocion proyecto-->
+
+<div class="card w-90 animated fadeIn fast" *ngIf="nombrePoyect.length > 0">
+  <div class="card-block">
+    <h2 class="card-title"> {{ nombrePoyect}} </h2>
+
+    <p class="card-text"> {{ descripcionProyect }} </p>
+
+    <h5 class="card-title" > Inicio del proyecto(AA/MM/DD)</h5>
+    <p class="card-text"> {{ fechasArray[0] }} </p>  
+
+    <h5 class="card-title" > Fin del proyecto(AA/MM/DD)</h5>
+    <p class="card-text"> {{ fechasArray[1] }} </p>
+    
+
+  </div>
+</div>

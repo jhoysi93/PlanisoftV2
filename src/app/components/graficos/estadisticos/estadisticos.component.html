@@ -1,0 +1,90 @@
+
+ <div class="container" *ngIf="idProyect">
+<br>
+<h1 class="text-center"> {{ proyecto.nombre | uppercase }} </h1>
+<hr>
+<br>
+
+
+      <div class="row  animated fadeIn fast">
+        <div class="col-md-12">
+        <h3>Porcentaje de Tareas Terminadas y no Terminadas</h3>  
+
+
+            <div style="display: block">
+                <canvas baseChart
+                        [data]="pieChartData"
+                        [labels]="pieChartLabels"
+                        [chartType]="pieChartType"
+                        ></canvas>
+            </div>
+
+            <h3> Total tareas: {{ cantidadTotalTareas }} </h3>
+            <h3> Tareas No Terminadas: {{ cantidadTareasNoTerminadas }} </h3>
+            <h3> Tareas Terminadas: {{ cantidadTareasTerminadas }} </h3>
+            <hr>
+        <br>
+
+        </div>
+      </div>
+
+
+
+      <div class="row  animated fadeIn fast">
+        <div class="col-md-12">
+        <h3>Prioridades Tareas Grafico Dona</h3>
+
+              <div style="display: block">
+                    <canvas baseChart
+                                [data]="doughnutChartData"
+                                [labels]="doughnutChartLabels"
+                                [chartType]="doughnutChartType"
+
+                                ></canvas>
+            </div>
+
+             <h3> Total tareas: {{ cantidadTotalTareas }} </h3>
+            <h3> Tareas Con prioridad Alta: {{ cantidadTareasALtas }} </h3>
+            <h3> Tareas Con prioridad Media: {{ cantidadTareasMedias }} </h3>
+            <h3> Tareas Con prioridad Baja: {{ cantidadTareasBajas }} </h3>
+            <hr>
+        <br>
+
+        </div>
+      </div>
+
+
+
+
+
+      <div class="row  animated fadeIn fast">
+        <div class="col-md-12">
+        <h3>Porcentaje de avanze grafico lineas</h3>
+
+           <div style="display: block">
+           <canvas baseChart
+                 [datasets]="barChartData"
+                 [labels]="barChartLabels"
+                 [options]="barChartOptions"
+                 [chartType]="barChartType"
+                 [legend]= "barChartLegend"
+                 ></canvas>
+            </div>
+
+            <h3> Total tareas: {{ cantidadTotalTareas }} </h3>
+            
+            <hr>
+        <br>
+        
+        </div>
+      </div>
+      
+
+    </div>
+
+    <div class="container" *ngIf="!idProyect">
+        <br>
+        <br>
+        <hr>
+    <h1>Seleccione un proyecto porfavor</h1>
+</div>

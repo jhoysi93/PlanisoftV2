@@ -1,0 +1,39 @@
+<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" style="color:white">PlaniSoftV2</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['home']" routerLinkActive="active">Home</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.authenticated()">
+        <a class="nav-link" [routerLink]="['dashboard']" routerLinkActive="active">Dashboard</a>
+      </li>
+      <li class="nav-item" *ngIf="auth.authenticated()">
+        <a class="nav-link" [routerLink]="['graficos']" routerLinkActive="active">Graficos</a>
+      </li>
+      <li class="nav-item" style="margin-left: 200px;" *ngIf="auth.authenticated()">
+        <h5 class="nav-link ">{{ auth.getProfile()?.name }}</h5>
+      </li>
+      <a class="navbar-brand" *ngIf="auth.authenticated()">
+          <img [src]="auth.getProfile()?.picture" width="50" height="50" alt="">
+      </a>
+    </ul>
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Login</a>
+      <button class="btn btn-primary btn-margin" (click)="auth.login()" *ngIf="!auth.authenticated()">Log In</button>
+      <button class="btn btn-primary btn-margin" (click)="auth.logout()" *ngIf="auth.authenticated()">Log Out</button>
+    </div>
+
+
+  </div>
+
+
+
+
+</nav>

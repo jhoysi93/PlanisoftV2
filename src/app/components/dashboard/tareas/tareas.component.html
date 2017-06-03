@@ -1,0 +1,200 @@
+<h1 *ngIf="nameProyectRecivido.length==0">Seleccione un proyecto porfavor</h1>
+<h1 *ngIf="nameProyectRecivido.length>0">Proyecto {{ nameProyectRecivido | uppercase}} </h1>
+
+<div class="text-right">
+
+  <hr>
+  <button (click)="desplegarVentanaDeTarea()" class="btn btn-primary btn-separation " type="button">
+      <i class="fa fa-plus" aria-hidden="true"></i>
+      Agregar Tarea
+    </button>
+
+</div>
+
+<!--Form Agregar Tarea-->
+<form class="formulario  animated fadeIn fast" [formGroup]="formato" (ngSubmit)="guardarTarea('g')" *ngIf="mostrarNuevaTarea">
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Nombre Tarea</label>
+    <div class="col-md-8">
+
+      <input class="form-control" [(ngModel)]="tarea.nombreTarea" type="text" required placeholder="Nombre Tarea" formControlName="nombreTarea">
+    </div>
+  </div>
+
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Descripcion Tarea</label>
+    <div class="col-md-8">
+
+      <input class="form-control" [(ngModel)]="tarea.descripcionTarea" type="text" placeholder="Descripcion Tarea" formControlName="descripcionTarea">
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Fecha Inicio</label>
+    <div class="col-md-8">
+      <input class="form-control" [(ngModel)]="tarea.fechaInicio" type="date" formControlName="fechaInicio">
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Fecha Fin</label>
+    <div class="col-md-8">
+      <input class="form-control" [(ngModel)]="tarea.fechaFin" type="date" formControlName="fechaFin">
+    </div>
+
+  </div>
+
+
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Prioridad Tarea</label>
+    <div class="col-md-8">
+
+      <select class="form-control" [(ngModel)]="tarea.prioridadTarea" type="text" name="prioridad" formControlName="prioridadTarea">
+                <option value="Baja">Baja</option>
+                <option value="Media">Media</option>
+                <option value="Alta">Alta</option>
+        </select>
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Avanze Tarea</label>
+    <div class="col-md-8">
+
+      <select class="form-control" [(ngModel)]="tarea.avanzeTarea" type="number" name="Avanze" placeholder="Avanze Tarea" formControlName="avanzeTarea">
+                
+                <option *ngFor="let num of avanzeNum ; let i = index" [value]="i"> {{ i }}  </option>
+      </select>
+    </div>
+  </div>
+
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Encargado de la Tarea</label>
+    <div class="col-md-8">
+
+      <input class="form-control" [(ngModel)]="tarea.encargadoTarea" type="text" placeholder="Encargado de la Tarea" formControlName="encargadoTarea">
+    </div>
+  </div>
+
+
+  <div class="form-group row" *ngIf="activarFuracion">
+    <label class="col-2 col-form-label">Duracion Tarea(dias)</label>
+    <div class="col-md-8">
+
+      <input class="form-control" type="text" [(ngModel)]="duracionTareaAux" placeholder="duracionTareaAux" formControlName="duracionTarea"
+        disabled hidden>
+    </div>
+  </div>
+
+
+  <div *ngIf="novalidoAlert" class="alert alert-danger" role="alert">
+    <strong>Complete todos los campos porfavor</strong> de manera correcta.
+  </div>
+
+  <div *ngIf="sivalidoAlert" class="alert alert-success" role="alert">
+    <strong>Tarea Guardada Exitosamente</strong>
+  </div>
+
+
+  <div class="form-group row" *ngIf="guardarNuevaTareaButton">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <button (click)="activarDuracion()" type="submit" class="btn btn-outline-primary">
+        Guardar
+      </button>
+    </div>
+  </div>
+
+
+</form>
+<!--Fin Form Agregar Tarea-->
+
+
+<div class="row" *ngIf="guardarCambiosTareaButton">
+  <div class="col-md-8">
+    <button (click)="guardarTarea('e')" type="input" class="btn btn-outline-primary">
+        Guardar Cambios
+      </button>
+  </div>
+</div>
+<br>
+
+
+<table  class="table table-responsive table-striped ">
+  <thead class="thead-inverse">
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th>Fecha Inicio</th>
+      <th>Fecha Fin</th>
+      <th>Duracion</th>
+      <th>Encargado</th>
+      <th>Prioridad</th>
+      <th>Avenze</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let tarea of _firebaseService.tareaPath | async ; let i = index">
+
+    <tr [ngClass]="{'bg-danger': activarClassDanger(tarea.fechaFin, tarea.avanzeTarea), 'bg-success': activarClaseSuccess(tarea.avanzeTarea)}">
+
+
+      <th scope="row"> {{ i+1 }} </th>
+      <td> {{ tarea.nombreTarea }} </td>
+      <td>{{ tarea.descripcionTarea }}</td>
+      <td>{{ tarea.fechaInicio }}</td>
+      <td>{{ tarea.fechaFin }}</td>
+      <td>{{ tarea.duracionTarea }} Dias</td>
+      <td>{{ tarea.encargadoTarea }}</td>
+      <td>{{ tarea.prioridadTarea }}</td>
+      <td>{{ tarea.avanzeTarea }} % </td>
+      <td>
+
+        <button (click)="editarTarea(tarea.$key) " class="text-rigth btn btn-primary btn-separation text-center" type="button">
+          <i class="fa fa-x1 fa-pencil" aria-hidden="true"></i>
+        </button>
+
+
+        <button (click)="showModal(tarea.$key, tarea.nombreTarea)" type="button" class=" text-rigth btn btn-warning btn-separation"
+          data-toggle="modal" data-target="#myModal">
+          <i class="fa fa-1x fa-trash" aria-hidden="true"></i>
+    </button>
+
+      </td>
+
+    </tr>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" #closeModal data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </div>
+          <div class="modal-body">
+            Seguro que quiere eliminar la tarea? {{ nombreTarea | uppercase }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button (click)="eliminarTarea()" type="button" class="btn btn-primary">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </tbody>
+</table>
